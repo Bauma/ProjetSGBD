@@ -1,6 +1,6 @@
-package domaine;
+package domain;
 
-import modele.Equipe;
+import models.Equipe;
 
 import java.sql.SQLException;
 import java.util.List;

@@ -1,5 +1,10 @@
-package modele;
+package models;
 
+
+import database.mysql.MysqlClient;
+import domain.mysql.MysqlMembreDomain;
+
+import java.sql.Connection;
 
 public class Membre {
     private int id;
@@ -22,6 +27,11 @@ public class Membre {
     //SETTERS
     public void setNomMembre(String nomMembre) {
         this.nomMembre = nomMembre;
+    }
+
+    private static MysqlMembreDomain membreDomaine() {
+        Connection dbConnect = MysqlClient.getConnection();
+        return new MysqlMembreDomain(dbConnect);
     }
 
 }

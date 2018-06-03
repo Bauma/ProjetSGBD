@@ -1,9 +1,9 @@
-package domaine;
+package domain;
 
 import java.sql.SQLException;
 import java.util.List;
 
-import modele.Pays;
+import models.Pays;
 
 public interface PaysDomain {
 

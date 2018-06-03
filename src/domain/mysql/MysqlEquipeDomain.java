@@ -1,8 +1,8 @@
-package domaine.mysql;
+package domain.mysql;
 
 import database.mysql.MysqlClient;
-import domaine.EquipeDomain;
-import modele.Equipe;
+import domain.EquipeDomain;
+import models.Equipe;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,10 +18,17 @@ public class MysqlEquipeDomain implements EquipeDomain {
     private static final String SELECTALL = "SELECT equipe.id, equipe.nomEquipe, pays.nomPays FROM equipe JOIN pays ON equipe.paysEquipe = pays.id";
     private static final String FINDBYID = SELECTALL + " WHERE equipe.id = ?";
 
+    private Connection dbConnect;
+
+    public MysqlEquipeDomain(Connection connexion) {
+        if (connexion == null) {
+            this.dbConnect = MysqlClient.getConnection();
+        }
+    }
+
     @Override
     public void create(String nom) throws SQLException {
-        Connection dbConnect = MysqlClient.getConnection();
-        PreparedStatement pStatement = dbConnect.prepareStatement(CREATE);
+        PreparedStatement pStatement = this.dbConnect.prepareStatement(CREATE);
         pStatement.setString(1, nom);
         pStatement.executeUpdate();
         pStatement.close();
@@ -29,8 +36,7 @@ public class MysqlEquipeDomain implements EquipeDomain {
 
     @Override
     public void delete(String nom) throws SQLException {
-        Connection dbConnect = MysqlClient.getConnection();
-        PreparedStatement pStatement = dbConnect.prepareStatement(DELETE);
+        PreparedStatement pStatement = this.dbConnect.prepareStatement(DELETE);
         pStatement.setString(1, nom);
         pStatement.executeUpdate();
         pStatement.close();
@@ -38,8 +44,7 @@ public class MysqlEquipeDomain implements EquipeDomain {
 
     @Override
     public List<Equipe> getAll() throws SQLException {
-        Connection dbConnect = MysqlClient.getConnection();
-        PreparedStatement pStatement = dbConnect.prepareStatement(SELECTALL);
+        PreparedStatement pStatement = this.dbConnect.prepareStatement(SELECTALL);
         ResultSet rs = pStatement.executeQuery();
         List<Equipe> listEquipe = new ArrayList<>();
         Conversion conversion = new Conversion();
@@ -53,8 +58,7 @@ public class MysqlEquipeDomain implements EquipeDomain {
 
     @Override
     public Equipe findById(int id) throws SQLException {
-        Connection dbConnect = MysqlClient.getConnection();
-        PreparedStatement pStatement = dbConnect.prepareStatement(FINDBYID);
+        PreparedStatement pStatement = this.dbConnect.prepareStatement(FINDBYID);
         pStatement.setInt(1, id);
         ResultSet rs = pStatement.executeQuery();
         pStatement.close();

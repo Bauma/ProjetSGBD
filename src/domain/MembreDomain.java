@@ -1,6 +1,6 @@
-package domaine;
+package domain;
 
-import modele.Membre;
+import models.Membre;
 
 import java.sql.SQLException;
 import java.util.List;
