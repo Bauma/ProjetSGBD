@@ -11,7 +11,7 @@ public class MysqlClient {
         private static Connection dbConnect = null;
 
         private static final String Driver = "com.mysql.jdbc.Driver";
-        private static final String Url = "jdbc:mysql://localhost:3306/demoSGDB?verifyServerCertificate=false&useSSL=true";
+        private static final String Url = "jdbc:mysql://localhost:3306/fortnite_world_cup?verifyServerCertificate=false&useSSL=true";
         private static final String User = "root";
         private static final String Pwd = "root";
 

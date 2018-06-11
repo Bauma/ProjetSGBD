@@ -1,5 +1,9 @@
 package vue.Panneaux;
 
+import controller.EquipeController;
+import modele.Pays;
+import modele.ZModel;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -7,6 +11,7 @@ import javax.swing.*;
 
 public class PanModifierEquipe extends JPanel implements ActionListener {
 
+    EquipeController ctrlEquipe;
 
     private JLabel lblIdEquipe = new JLabel("Id de l'équipe");
     private JLabel lblNomEquipe = new JLabel("Nom de l'équipe");
@@ -35,7 +40,18 @@ public class PanModifierEquipe extends JPanel implements ActionListener {
 
 
 
-    public PanModifierEquipe() {
+    public PanModifierEquipe(int teamId) {
+        this.ctrlEquipe = new EquipeController();
+        Object[][] dataEquipe = ctrlEquipe.afficherEquipe();
+        String title[] = {"id", "Nom de l'équipe", "Pays", "Entraineur", "Joueur 1", "Joueur 2", "Joueur 3"};
+        ZModel model = new ZModel(dataEquipe, title);
+        txtIdEquipe.setText(model.getValueAt(teamId,0).toString());
+        txtNomEquipe.setText(model.getValueAt(teamId,1).toString());
+        txtPaysEquipe.setText(model.getValueAt(teamId,2).toString());
+        //RECUPERER TOUTES LES POSSIBILITE ET EN FAIRE UNE LIST AVEC CELLE EN COURS EN PREMIER / GERER LES NULL (EQUIPES VIDES)
+        cbEntraineur.addItem(model.getValueAt(teamId,3).toString());
+        cbJoueur1.addItem(model.getValueAt(teamId,4).toString());
+        cbJoueur2.addItem(model.getValueAt(teamId,5).toString());
 
         initPanel();
     }
@@ -68,6 +84,7 @@ public class PanModifierEquipe extends JPanel implements ActionListener {
         txtIdEquipe.setBounds(150, 20, 150, 20);
         txtIdEquipe.setEditable(false);
         this.add(txtIdEquipe);
+
 
         txtNomEquipe.setBounds(150, 50, 150, 20);
         txtNomEquipe.setEditable(true);
@@ -118,6 +135,8 @@ public class PanModifierEquipe extends JPanel implements ActionListener {
 
         this.setLayout(null);
     }
+
+
 
 
     @Override

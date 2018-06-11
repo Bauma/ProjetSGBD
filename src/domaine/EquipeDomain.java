@@ -8,7 +8,8 @@ import java.util.List;
 public interface EquipeDomain {
 
     void create(String nom) throws SQLException;
-    void delete(String nom) throws SQLException;
-    List<Equipe> getAll() throws SQLException;
+    void delete(int id) throws SQLException;
+    Equipe[] getAll() throws SQLException;
     Equipe findById(int id) throws SQLException;
+    Equipe[] findByPaysId(int paysId) throws SQLException;
 }

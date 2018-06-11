@@ -19,7 +19,7 @@ public class FenAfficherMembre extends JFrame {
     }
 
     private void initFrame() {
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setBounds(300, 200, 900, 650);
         this.setContentPane(panAffMembre);
     }

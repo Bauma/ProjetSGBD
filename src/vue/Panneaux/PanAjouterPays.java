@@ -1,5 +1,7 @@
 package vue.Panneaux;
 
+import controller.PaysController;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -7,15 +9,11 @@ import javax.swing.*;
 
 public class PanAjouterPays extends JPanel implements ActionListener {
 
+    private PaysController ctrl;
 
     private JLabel lblNomPays = new JLabel("nom du Pays");
 
-
-
     private JTextField txtNomPays = new JTextField();
-
-
-
 
     private JButton btnAjouter = new JButton("Ajouter");
 
@@ -23,7 +21,7 @@ public class PanAjouterPays extends JPanel implements ActionListener {
 
 
     public PanAjouterPays() {
-
+        this.ctrl = new PaysController();
         initPanel();
     }
 
@@ -48,7 +46,16 @@ public class PanAjouterPays extends JPanel implements ActionListener {
 
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e){
+        switch (e.getActionCommand()){
+            case "AjouterEquipe" :
+                ctrl.createPays(txtNomPays.getText());
+
+                break;
+
+
+        }
+
 
     }
 }

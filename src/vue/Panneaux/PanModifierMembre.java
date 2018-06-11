@@ -1,5 +1,7 @@
 package vue.Panneaux;
 
+import controller.EquipeController;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -7,6 +9,7 @@ import javax.swing.*;
 
 public class PanModifierMembre extends JPanel implements ActionListener {
 
+    private EquipeController ctrlEquipe;
 
     private JLabel lblIdMembre = new JLabel("Id");
     private JLabel lblPseudo = new JLabel("Pseudo");
@@ -30,7 +33,7 @@ public class PanModifierMembre extends JPanel implements ActionListener {
 
 
     public PanModifierMembre() {
-
+        this.ctrlEquipe = new EquipeController();
         initPanel();
     }
 

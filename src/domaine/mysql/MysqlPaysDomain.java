@@ -18,7 +18,7 @@ public class MysqlPaysDomain implements PaysDomain {
     private static final String SELECTALL = "SELECT * FROM pays";
     private static final String FINDBYID = "SELECT * FROM pays where id = ?";
 
-
+    public MysqlPaysDomain() {}
 
 
 
@@ -41,7 +41,7 @@ public class MysqlPaysDomain implements PaysDomain {
     }
 
     @Override
-    public List<Pays> getAll() throws SQLException {
+    public Pays[] getAll() throws SQLException {
         Connection dbConnect = MysqlClient.getConnection();
         PreparedStatement pStatement = dbConnect.prepareStatement(SELECTALL);
         ResultSet rs = pStatement.executeQuery();
@@ -52,7 +52,7 @@ public class MysqlPaysDomain implements PaysDomain {
         }
         pStatement.close();
 
-        return listPays;
+        return listPays.toArray(new Pays[listPays.size()]);
     }
 
     @Override

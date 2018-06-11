@@ -1,6 +1,11 @@
 package vue.Panneaux;
 
 
+import controller.MembreController;
+import modele.ZModel;
+import vue.FenAjouterMembre;
+import vue.FenModifierMembre;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -8,49 +13,29 @@ import javax.swing.*;
 
 public class PanAfficherMembre extends JPanel implements ActionListener {
 
-
-
-    //private JLabel lblNom = new JLabel("Nom Pays :");
-
-
-    //private JTextField txtCode = new JTextField();
+    private MembreController ctrlMembre;
 
     private JButton btnModifierMembre = new JButton("Modifier Membre");
     private JButton btnSupprimerMembre = new JButton("Supprimer Membre");
     private JButton btnAjouterMembre = new JButton("Ajouter Membre");
 
-    private JButton btnAfficherMembres = new JButton("Afficher Membres");
-    private JButton btnAfficherPays = new JButton("Afficher Pays");
-    private JButton btnAfficherEquipes = new JButton("Afficher Equipes");
+    private JButton btnActualiserMembres = new JButton("Actualiser");
 
-    Object[][] data = {
-            {1,"Cinetik", "France", "SardocheTeam", "Entraineur"},
-            {2,"Boma", "Allemagne", "Red", "Joueur"},
-            {3,"Ryoh", "Pologne", "Blue", "Entraineur/Joueur"},
-            {4,"Bach", "Belgique", "Green", "Joueur"}
-    };
 
-    String title[] = {"id", "Pseudo", "Nationalité", "Equipe", "Role"};
 
-    private JTable tableAfficherResult = new JTable(data, title);
+    private JTable tableAfficherResult = new JTable();
     private JScrollPane js = new JScrollPane(tableAfficherResult);
 
 
 
     public PanAfficherMembre() {
 
+        this.ctrlMembre = new MembreController();
         initPanel();
     }
 
     private void initPanel() {
 
-    //    lblNom.setBounds(10, 40, 80, 20);
-    //    this.add(lblNom);
-
-
-    //    txtNom.setBounds(100, 40, 100, 20);
-    //    txtNom.setEditable(false);
-    //    this.add(txtNom);
 
 //Boutons de gestion(GAUCHE)
 
@@ -71,20 +56,11 @@ public class PanAfficherMembre extends JPanel implements ActionListener {
 
 //Boutons d'affichages(DROITE)
 
-        btnAfficherMembres.setBounds(710, 10, 150, 30);
-        btnAfficherMembres.addActionListener(this);
-        btnAfficherMembres.setActionCommand("AjouterMembre");
-        this.add(btnAfficherMembres);
+        btnActualiserMembres.setBounds(710, 90, 150, 30);
+        btnActualiserMembres.addActionListener(this);
+        btnActualiserMembres.setActionCommand("Actualiser");
+        this.add(btnActualiserMembres);
 
-        btnAfficherPays.setBounds(710, 50, 150, 30);
-        btnAfficherPays.addActionListener(this);
-        btnAfficherPays.setActionCommand("AjouterMembre");
-        this.add(btnAfficherPays);
-
-        btnAfficherEquipes.setBounds(710, 90, 150, 30);
-        btnAfficherEquipes.addActionListener(this);
-        btnAfficherEquipes.setActionCommand("AjouterMembre");
-        this.add(btnAfficherEquipes);
 
         js.setBounds(20,140,840,440);
         js.setVisible(true);
@@ -97,6 +73,24 @@ public class PanAfficherMembre extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        switch (e.getActionCommand()) {
+            case "AjouterMembre":
+                FenAjouterMembre fenAjoutMembre = new FenAjouterMembre();
+                break;
+            case "ModifierMembre":
+                FenModifierMembre fenModifMembre = new FenModifierMembre();
+                break;
 
+            case "Actualiser":
+
+                Object[][] dataMembre = ctrlMembre.afficherMembre();
+                String title[] = {"id", "Pseudo", "Nationalité", "Equipe", "Role"};
+                ZModel model = new ZModel(dataMembre, title);
+                tableAfficherResult.setModel(model);
+                break;
+
+        }
     }
+
+
 }

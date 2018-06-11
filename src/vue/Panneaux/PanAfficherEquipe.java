@@ -2,6 +2,12 @@ package vue.Panneaux;
 
 
 
+import controller.EquipeController;
+import controller.MembreController;
+import controller.PaysController;
+import modele.ZModel;
+import vue.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,34 +16,28 @@ import javax.swing.*;
 
 public class PanAfficherEquipe extends JPanel implements ActionListener {
 
+    private EquipeController ctrlEquipe;
+
+
     private JButton btnModifierEquipe = new JButton("Modifier Equipe");
     private JButton btnSupprimerEquipe = new JButton("Supprimer Equipe");
     private JButton btnAjouterEquipe = new JButton("Ajouter Equipe");
 
-    private JButton btnAfficherMembres = new JButton("Afficher Membres");
-    private JButton btnAfficherPays = new JButton("Afficher Pays");
-    private JButton btnAfficherEquipes = new JButton("Afficher Equipes");
+    private JButton btnActualiserEquipes = new JButton("Actualiser");
 
-    Object[][] data = {
-            {1,"Dark", "Belgique", "Cinetik", "Boma", "Ryoh", "Bach"},
-            {2,"Light", "France", "Cinetik", "Boma", "Ryoh", "Bach"},
-            {3,"Green", "Allemagne", "Cinetik", "Boma", "Ryoh", "Bach"},
-            {4,"Blue", "Espgne", "Cinetik", "Boma", "Ryoh", "Bach"}
-    };
 
-    String title[] = {"id", "Nom de l'équipe", "Pays", "Entraineur", "Joueur 1", "Joueur 2", "Joueur 3"};
 
-    private JTable tableAfficherResult = new JTable(data, title);
+    private JTable tableAfficherResult = new JTable();
     private JScrollPane js = new JScrollPane(tableAfficherResult);
 
 
     public PanAfficherEquipe() {
+        this.ctrlEquipe = new EquipeController();
 
         initPanel();
     }
 
     private void initPanel() {
-
 
 //Boutons de gestion(GAUCHE)
 
@@ -56,24 +56,12 @@ public class PanAfficherEquipe extends JPanel implements ActionListener {
         btnAjouterEquipe.setActionCommand("AjouterEquipe");
         this.add(btnAjouterEquipe);
 
-
-
 //Boutons d'affichages(DROITE)
 
-        btnAfficherMembres.setBounds(710, 10, 150, 30);
-        btnAfficherMembres.addActionListener(this);
-        btnAfficherMembres.setActionCommand("AfficherMembres");
-        this.add(btnAfficherMembres);
-
-        btnAfficherPays.setBounds(710, 50, 150, 30);
-        btnAfficherPays.addActionListener(this);
-        btnAfficherPays.setActionCommand("AfficherPays");
-        this.add(btnAfficherPays);
-
-        btnAfficherEquipes.setBounds(710, 90, 150, 30);
-        btnAfficherEquipes.addActionListener(this);
-        btnAfficherEquipes.setActionCommand("AfficherEquipes");
-        this.add(btnAfficherEquipes);
+        btnActualiserEquipes.setBounds(710, 90, 150, 30);
+        btnActualiserEquipes.addActionListener(this);
+        btnActualiserEquipes.setActionCommand("Actualiser");
+        this.add(btnActualiserEquipes);
 
 
         js.setBounds(20,140,840,440);
@@ -86,6 +74,33 @@ public class PanAfficherEquipe extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        switch (e.getActionCommand()) {
+            case "AjouterEquipe":
+                FenAjouterEquipe fenAjoutEquipe = new FenAjouterEquipe();
 
+                break;
+            case "ModifierEquipe":
+                int row = this.tableAfficherResult.getSelectedRow();
+                FenModifierEquipe fenModifEquipe = new FenModifierEquipe(row);
+
+                break;
+            case "SupprimerEquipe":
+                int rowToDelete = this.tableAfficherResult.getSelectedRow();
+                int idDelete = (int) this.tableAfficherResult.getValueAt(rowToDelete, 0);
+                ctrlEquipe.deleteEquipe(idDelete);
+
+                break;
+
+            case "Actualiser":
+
+                Object[][] dataEquipe = ctrlEquipe.afficherEquipe();
+                String title[] = {"id", "Nom de l'équipe", "Pays", "Entraineur", "Joueur 1", "Joueur 2", "Joueur 3"};
+                ZModel model = new ZModel(dataEquipe, title);
+                tableAfficherResult.setModel(model);
+                break;
+
+        }
     }
+
+
 }

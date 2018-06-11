@@ -19,7 +19,7 @@ public class FenAjouterPays extends JFrame {
     }
 
     private void initFrame() {
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setBounds(300, 200, 450, 100);
         this.setContentPane(panAjoutPays);
     }

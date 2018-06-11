@@ -1,5 +1,6 @@
 package vue;
 
+import controller.EquipeController;
 import vue.Panneaux.PanModifierEquipe;
 
 import java.awt.HeadlessException;
@@ -11,15 +12,15 @@ public class FenModifierEquipe extends JFrame {
     private PanModifierEquipe panModifEquipe ;
 
 
-    public FenModifierEquipe() throws HeadlessException {
+    public FenModifierEquipe(int id) throws HeadlessException {
 
-        panModifEquipe = new PanModifierEquipe();
+        panModifEquipe = new PanModifierEquipe(id);
         initFrame();
         this.setVisible(true);
     }
 
     private void initFrame() {
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setBounds(300, 200, 450, 300);
         this.setContentPane(panModifEquipe);
     }
