@@ -13,17 +13,19 @@ import java.util.List;
 
 public class MysqlEquipeDomain implements EquipeDomain {
 
-    private static final String CREATE = "INSERT INTO equipe (nomEquipe) VALUES (?)";
+    private static final String CREATE = "INSERT INTO Equipe (nomEquipe, paysEquipe) VALUES (?,?)";
     private static final String DELETE = "DELETE FROM equipe WHERE id = ?";
     private static final String SELECTALL = "SELECT equipe.id, equipe.nomEquipe, pays.nomPays FROM equipe JOIN pays ON equipe.paysEquipe = pays.id";
     private static final String FINDBYID = SELECTALL + " WHERE equipe.id = ?";
     private static final String FINDBYPAYSID = SELECTALL + " WHERE pays.id = ?";
+    private static final String UPDATE = "UPDATE equipe SET nomEquipe = ? WHERE id = ?";
 
     @Override
-    public void create(String nom) throws SQLException {
+    public void create(String nom, int nationnalite) throws SQLException {
         Connection dbConnect = MysqlClient.getConnection();
         PreparedStatement pStatement = dbConnect.prepareStatement(CREATE);
         pStatement.setString(1, nom);
+        pStatement.setInt(2,nationnalite);
         pStatement.executeUpdate();
         pStatement.close();
     }
@@ -76,6 +78,17 @@ public class MysqlEquipeDomain implements EquipeDomain {
         pStatement.close();
 
         return listEquipe.toArray(new Equipe[listEquipe.size()]);
+    }
+
+    public void updateNomEquipe(String nom, int id) throws SQLException {
+
+            Connection dbConnect = MysqlClient.getConnection();
+            PreparedStatement pStatement = dbConnect.prepareStatement(UPDATE);
+            pStatement.setString(1, nom);
+            pStatement.setInt(2, id);
+            pStatement.executeUpdate();
+            pStatement.close();
+
     }
 
 }

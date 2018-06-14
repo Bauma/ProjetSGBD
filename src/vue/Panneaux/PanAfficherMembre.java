@@ -78,7 +78,8 @@ public class PanAfficherMembre extends JPanel implements ActionListener {
                 FenAjouterMembre fenAjoutMembre = new FenAjouterMembre();
                 break;
             case "ModifierMembre":
-                FenModifierMembre fenModifMembre = new FenModifierMembre();
+                int row = this.tableAfficherResult.getSelectedRow();
+                FenModifierMembre fenModifMembre = new FenModifierMembre(row);
                 break;
 
             case "Actualiser":

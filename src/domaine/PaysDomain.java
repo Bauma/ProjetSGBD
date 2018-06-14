@@ -11,4 +11,5 @@ public interface PaysDomain {
     void delete(String nom) throws SQLException;
     Pays[] getAll() throws SQLException;
     Pays findById(int id) throws SQLException;
+    int findByName(String nom) throws SQLException;
 }

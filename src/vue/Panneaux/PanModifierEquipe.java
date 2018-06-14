@@ -4,8 +4,11 @@ import controller.EquipeController;
 import modele.Pays;
 import modele.ZModel;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import javax.swing.*;
 
 
@@ -39,19 +42,9 @@ public class PanModifierEquipe extends JPanel implements ActionListener {
     private JButton btnSupprimerJoueur3 = new JButton("X");
 
 
-
     public PanModifierEquipe(int teamId) {
         this.ctrlEquipe = new EquipeController();
-        Object[][] dataEquipe = ctrlEquipe.afficherEquipe();
-        String title[] = {"id", "Nom de l'équipe", "Pays", "Entraineur", "Joueur 1", "Joueur 2", "Joueur 3"};
-        ZModel model = new ZModel(dataEquipe, title);
-        txtIdEquipe.setText(model.getValueAt(teamId,0).toString());
-        txtNomEquipe.setText(model.getValueAt(teamId,1).toString());
-        txtPaysEquipe.setText(model.getValueAt(teamId,2).toString());
-        //RECUPERER TOUTES LES POSSIBILITE ET EN FAIRE UNE LIST AVEC CELLE EN COURS EN PREMIER / GERER LES NULL (EQUIPES VIDES)
-        cbEntraineur.addItem(model.getValueAt(teamId,3).toString());
-        cbJoueur1.addItem(model.getValueAt(teamId,4).toString());
-        cbJoueur2.addItem(model.getValueAt(teamId,5).toString());
+        getForm(teamId);
 
         initPanel();
     }
@@ -137,10 +130,100 @@ public class PanModifierEquipe extends JPanel implements ActionListener {
     }
 
 
-
-
     @Override
     public void actionPerformed(ActionEvent e) {
+        switch (e.getActionCommand()) {
+            case "SupprimerJoueur1":
+                ctrlEquipe.leaveEquipe(cbJoueur1.getItemAt(0).toString());
+                cbJoueur1.repaint();
+                break;
+            case "SupprimerJoueur2":
+                ctrlEquipe.leaveEquipe(cbJoueur2.getItemAt(0).toString());
+                break;
+            case "SupprimerJoueur3":
+                ctrlEquipe.leaveEquipe(cbJoueur3.getItemAt(0).toString());
+                break;
+            case "ModifierEquipe":
+                ArrayList newEntry = new ArrayList();
+                newEntry.add(txtIdEquipe.getText());
+                newEntry.add(txtNomEquipe.getText());
+                newEntry.add(txtPaysEquipe.getText());
+                newEntry.add(cbEntraineur.getSelectedItem());
+                newEntry.add(cbJoueur1.getSelectedItem());
+                newEntry.add(cbJoueur1.getSelectedItem());
+                newEntry.add(cbJoueur1.getSelectedItem());
+                newEntry.add(cbEntraineur.getItemAt(0));
+                newEntry.add(cbJoueur1.getItemAt(0));
+                newEntry.add(cbJoueur2.getItemAt(0));
+                newEntry.add(cbJoueur3.getItemAt(0));
+                ctrlEquipe.updateEquipe(newEntry);
+
+                Container topLevel = this.getTopLevelAncestor();
+                JFrame maJFrame = (JFrame) topLevel;
+                maJFrame.dispose();
+
+                break;
+        }
+    }
+
+    public void getForm(int teamId){
+
+        String membreNull = "";
+        Object[][] dataEquipe = ctrlEquipe.afficherEquipe();
+        String title[] = {"id", "Nom de l'équipe", "Pays", "Entraineur", "Joueur 1", "Joueur 2", "Joueur 3"};
+        ZModel model = new ZModel(dataEquipe, title);
+        txtIdEquipe.setText(model.getValueAt(teamId, 0).toString());
+        txtNomEquipe.setText(model.getValueAt(teamId, 1).toString());
+        txtPaysEquipe.setText(model.getValueAt(teamId, 2).toString());
+        ArrayList<String> freeTrainer;
+
+        if (model.getValueAt(teamId, 3) != null) {
+            freeTrainer = ctrlEquipe.getFreeTrainer(model.getValueAt(teamId, 3).toString(),
+                    model.getValueAt(teamId, 1).toString());
+        }else{
+            freeTrainer = ctrlEquipe.getFreeTrainer(membreNull,
+                    model.getValueAt(teamId, 1).toString());
+        }
+
+        cbEntraineur.setModel(new DefaultComboBoxModel(freeTrainer.toArray()));
+
+        ArrayList<String> freePlayers1;
+        ArrayList<String> freePlayers2;
+        ArrayList<String> freePlayers3;
+
+        if (model.getValueAt(teamId, 4) != null) {
+            freePlayers1 = ctrlEquipe.getFreePlayer(model.getValueAt(teamId, 4).toString(),
+                    model.getValueAt(teamId, 2).toString(),
+                    model.getValueAt(teamId, 1).toString());
+        } else {
+            freePlayers1 = ctrlEquipe.getFreePlayer(membreNull,
+                    model.getValueAt(teamId, 2).toString(),
+                    model.getValueAt(teamId, 1).toString());
+        }
+        if (model.getValueAt(teamId, 5) != null) {
+            freePlayers2 = ctrlEquipe.getFreePlayer(model.getValueAt(teamId, 5).toString(),
+                    model.getValueAt(teamId, 2).toString(),
+                    model.getValueAt(teamId, 1).toString());
+        } else {
+            freePlayers2 = ctrlEquipe.getFreePlayer(membreNull,
+                    model.getValueAt(teamId, 2).toString(),
+                    model.getValueAt(teamId, 1).toString());
+        }
+        if (model.getValueAt(teamId, 6) != null) {
+            freePlayers3 = ctrlEquipe.getFreePlayer(model.getValueAt(teamId, 6).toString(),
+                    model.getValueAt(teamId, 2).toString(),
+                    model.getValueAt(teamId, 1).toString());
+        } else {
+            freePlayers3 = ctrlEquipe.getFreePlayer(membreNull,
+                    model.getValueAt(teamId, 2).toString(),
+                    model.getValueAt(teamId, 1).toString());
+        }
+
+        cbJoueur1.setModel(new DefaultComboBoxModel(freePlayers1.toArray()));
+        cbJoueur2.setModel(new DefaultComboBoxModel(freePlayers2.toArray()));
+        cbJoueur3.setModel(new DefaultComboBoxModel(freePlayers3.toArray()));
+
 
     }
+
 }

@@ -1,7 +1,6 @@
 package modele;
 
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import database.mysql.MysqlClient;
 import domaine.mysql.MysqlMembreDomain;
 
@@ -65,6 +64,11 @@ public class Membre {
 
         if (isJoueur == false){
             if (isEntraineur == false){
+                try {
+                    leaveEquipe(this.id);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 return role = null;
             }else{
                 return role = "Entraineur";
@@ -77,10 +81,22 @@ public class Membre {
             }
         }
     }
+    public void setPays(String pays){
+        this.pays = pays;
+    }
+    public void setEquipe(String equipe){
+        this.equipe = equipe;
+    }
+
+
+
 
 
     public static Membre[] getAllMembre() throws SQLException {
         return membreDomaine().getAll();
+    }
+    public static Membre findByName(String nomMembre) throws SQLException{
+        return membreDomaine().findByName(nomMembre);
     }
 
     public static Membre[] findTrainerByTeamId(int id) throws SQLException{
@@ -89,9 +105,20 @@ public class Membre {
     public static Membre[] findAllPlayerByTeamId(int id) throws SQLException{
         return membreDomaine().findAllPlayerByTeamId(id);
     }
-
-    public static void createNewMembre(String nom) throws SQLException {
-        membreDomaine().create(nom);
+    public static void createNewMembre(String nom, int nationnalite) throws SQLException {
+        membreDomaine().create(nom, nationnalite);
+    }
+    public static void leaveEquipe (int idMembre) throws SQLException{
+        membreDomaine().leaveEquipe(idMembre);
+    }
+    public static void updateMembreEquipe (int idMembre, int idEquipe, int isJoueur, int isEntraineur,  String nomMembre) throws SQLException{
+        membreDomaine().updateMembreEquipe(idMembre, idEquipe, isJoueur, isEntraineur, nomMembre);
+    }
+    public static void createMembreEquipe(int idMembre, int idEquipe, int isJoueur, int isEntraineur) throws SQLException{
+        membreDomaine().createMembreEquipe(idMembre, idEquipe, isJoueur, isEntraineur);
+    }
+    public static void updateNomMembre(String nom, int id) throws SQLException {
+        membreDomaine().updateNomMembre(nom, id);
     }
 
 

@@ -5,7 +5,7 @@ import domaine.mysql.MysqlEquipeDomain;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
+
 
 public class Equipe {
     private int id;
@@ -45,8 +45,11 @@ public class Equipe {
     public static Equipe[] getEquipesForPays(int paysId) throws SQLException {
         return equipeDomaine().findByPaysId(paysId);
     }
-    public static void createNewEquipe(String nom) throws SQLException {
-        equipeDomaine().create(nom);
+    public static void createNewEquipe(String nom, int nationnalite) throws SQLException {
+        equipeDomaine().create(nom, nationnalite);
+    }
+    public static void updateEquipe(String nom, int id) throws SQLException{
+        equipeDomaine().updateNomEquipe(nom, id);
     }
 
     public static void deleteEquipe(int id) throws  SQLException{

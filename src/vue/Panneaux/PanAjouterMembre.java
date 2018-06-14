@@ -1,24 +1,31 @@
 package vue.Panneaux;
 
+import controller.MembreController;
+import modele.Pays;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.*;
 
 
 public class PanAjouterMembre extends JPanel implements ActionListener {
 
+    private MembreController ctrlMembre;
 
     private JLabel lblPseudo = new JLabel("Pseudo");
     private JLabel lblNationalite = new JLabel("Nationalité");
 
     private JTextField txtPseudo = new JTextField();
-    private JTextField txtNationalite = new JTextField();
+    private JComboBox cbNationalite = new JComboBox();
 
     private JButton btnAjouter = new JButton("Ajouter");
 
 
     public PanAjouterMembre() {
-
+        this.ctrlMembre = new MembreController();
+        getForm();
         initPanel();
     }
 
@@ -34,9 +41,10 @@ public class PanAjouterMembre extends JPanel implements ActionListener {
         txtPseudo.setEditable(true);
         this.add(txtPseudo);
 
-        txtNationalite.setBounds(150, 50, 150, 20);
-        txtNationalite.setEditable(true);
-        this.add(txtNationalite);
+
+        cbNationalite.setBounds(150, 50, 150, 20);
+        cbNationalite.setEditable(true);
+        this.add(cbNationalite);
 
 
         btnAjouter.setBounds(315, 30, 100, 30);
@@ -50,6 +58,30 @@ public class PanAjouterMembre extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        switch (e.getActionCommand()){
+            case "AjouterMembre" :
 
+                ctrlMembre.createMembre(txtPseudo.getText(), ctrlMembre.getIdPaysByName(cbNationalite.getSelectedItem().toString()));
+                Container topLevel = this.getTopLevelAncestor();
+                JFrame maJFrame = (JFrame) topLevel;
+                maJFrame.dispose();
+                break;
+
+
+        }
+
+    }
+
+    public void getForm(){
+
+        Pays[] tabPays = ctrlMembre.getAllPays();
+
+        ArrayList<String> allPays = new ArrayList<>();
+
+        for(Pays pays : tabPays) {
+            allPays.add(pays.getNomPays());
+
+        }
+        cbNationalite.setModel(new DefaultComboBoxModel(allPays.toArray()));
     }
 }

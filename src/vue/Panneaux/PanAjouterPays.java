@@ -2,6 +2,7 @@ package vue.Panneaux;
 
 import controller.PaysController;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -38,7 +39,7 @@ public class PanAjouterPays extends JPanel implements ActionListener {
 
         btnAjouter.setBounds(315, 15, 100, 30);
         btnAjouter.addActionListener(this);
-        btnAjouter.setActionCommand("AjouterEquipe");
+        btnAjouter.setActionCommand("AjouterPays");
         this.add(btnAjouter);
 
         this.setLayout(null);
@@ -48,9 +49,11 @@ public class PanAjouterPays extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e){
         switch (e.getActionCommand()){
-            case "AjouterEquipe" :
+            case "AjouterPays" :
                 ctrl.createPays(txtNomPays.getText());
-
+                Container topLevel = this.getTopLevelAncestor();
+                JFrame maJFrame = (JFrame) topLevel;
+                maJFrame.dispose();
                 break;
 
 

@@ -13,17 +13,24 @@ public class Conversion {
     }
 
     public Membre sqlToMembre(ResultSet resultSet) throws SQLException {
-        return new Membre(
+        String pays = null, equipe = null;
+
+
+        Membre membre=  new Membre(
                 resultSet.getInt(1),
                 resultSet.getString(2),
-                resultSet.getString(3),
-                resultSet.getString(4),
+                pays,
+                equipe,
                 resultSet.getBoolean(5),
                 resultSet.getBoolean(6)
         );
 
+        pays=resultSet.getString(3);
+        if (!resultSet.wasNull()) membre.setPays(pays);
+        equipe=resultSet.getString(4);
+        if (!resultSet.wasNull()) membre.setEquipe(equipe);
 
-
+        return membre;
     }
 
     public Equipe sqlToEquipe(ResultSet resultSet) throws SQLException {

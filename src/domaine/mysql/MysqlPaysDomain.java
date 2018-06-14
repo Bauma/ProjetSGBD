@@ -17,6 +17,7 @@ public class MysqlPaysDomain implements PaysDomain {
     private static final String DELETE = "DELETE FROM pays WHERE nomPays = ?";
     private static final String SELECTALL = "SELECT * FROM pays";
     private static final String FINDBYID = "SELECT * FROM pays where id = ?";
+    private static final String FINDBYNAME = "SELECT id FROM pays where nomPays = ?";
 
     public MysqlPaysDomain() {}
 
@@ -64,6 +65,19 @@ public class MysqlPaysDomain implements PaysDomain {
         pStatement.close();
         Conversion conversion = new Conversion();
         return conversion.sqlToPays(rs);
+    }
+
+    @Override
+    public int findByName(String nom) throws SQLException {
+        int idPays;
+        Connection dbConnect = MysqlClient.getConnection();
+        PreparedStatement pStatement = dbConnect.prepareStatement(FINDBYNAME);
+        pStatement.setString(1, nom);
+        ResultSet rs = pStatement.executeQuery();
+        rs.next();
+        idPays = rs.getInt(1);
+        pStatement.close();
+        return idPays;
     }
 
 

@@ -39,6 +39,9 @@ public class Pays {
     public static Pays[] getAllPays() throws SQLException {
         return paysDomaine().getAll();
     }
+    public static int getidPaysByName(String nom) throws SQLException{
+        return paysDomaine().findByName(nom);
+    }
 
     public static void createNewPays(String nom) throws SQLException {
         paysDomaine().create(nom);

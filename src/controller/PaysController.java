@@ -35,12 +35,12 @@ public PaysController(){}
             Object[][] tableData = new Object[tabPays.length][4];
             int index = 0;
             for(Pays pays : tabPays){
-                System.out.println(pays);
+
                 tableData[index][0] = pays.getId();
                 tableData[index][1] = pays.getNomPays();
                 Equipe[] tabEquipe = Equipe.getEquipesForPays(pays.getId());
                 for(Equipe equipe : tabEquipe){
-                    System.out.println(equipe.getId());
+
                     if (tableData[index][2] == null) {
                         tableData[index][2] = equipe.getNomEquipe();
                     } else{
